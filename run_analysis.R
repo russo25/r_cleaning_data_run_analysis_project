@@ -35,11 +35,11 @@ library(dplyr)
 
 ## 12. Read in the measurement labels data sets
 
-    features <- read.csv("UCI HAR Dataset/features.txt", sep="", header=FALSE)
+    m_labels <- read.csv("UCI HAR Dataset/features.txt", sep="", header=FALSE)
     
 ## 13. Convert column number 2 to vector
     
-    column.names <- as.vector(features[, 2])
+    column.names <- as.vector(m_labels[, 2])
     
 ## 14. Apply  measurement labels as column names combined data sets
     colnames(run.data) <- c("subject_id", "activity_labels", column.names)
@@ -54,13 +54,13 @@ library(dplyr)
     
     activity.labels <- read.csv("UCI HAR Dataset/activity_labels.txt", sep="", header=FALSE)
 
-## 17. Replace  activity codes in the smaller data sest with  labels  the activity labels data sets.
+## 17. Replace  activity codes in the smaller data sets with  labels  the activity labels data sets.
     
-    run.data$activity_labels <- as.character(activity.labels[
-                  match(run.data$activity_labels, activity.labels$V1), 'V2'])
+    run.data$activity_labels <- as.character(activity.labels
+                                  [match(run.data$activity_labels, activity.labels$V1), 'V2'])
 
-## 18. Clean column names, and remove parantheses and hyphens
-## Correct columns that repeat the word "Body".
+## 18. Clean column names, and remove parantheses and hyphens and correct
+##columns that repeat the word "Body".
     
     setnames(run.data, colnames(run.data), gsub("\\(\\)", "", colnames(run.data)))
     setnames(run.data, colnames(run.data), gsub("-", "_", colnames(run.data)))
@@ -68,7 +68,7 @@ library(dplyr)
     
 ## 19.  Group the running data by subject & acty, and calculate all means
     
-    run.data.summary <- run.data %>%
+    run.data.summary <-run.data %>%
                   group_by(subject_id, activity_labels) %>%
                   summarize_each(funs(mean))
 
